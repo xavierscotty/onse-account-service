@@ -6,6 +6,6 @@ def create():
 
     @app.route('/health')
     def health():
-        return jsonify({})
+        return jsonify(message='OK')
 
     return app
