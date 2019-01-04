@@ -1,0 +1,28 @@
+---
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: Account Service API
+  description: An API to manage accounts
+
+host: "localhost:5001"
+schemes:
+  - http
+
+paths:
+  /health:
+    get:
+      summary: Check the health of the service
+      description: Returns a message indicating the health of the service
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Customer details found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Contains the string "OK"
