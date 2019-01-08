@@ -23,7 +23,7 @@ def test_get_accounts_by_number_when_account_exists(web_client):
     response = web_client.get('/accounts/999999')
 
     expected_json = {'accountNumber': '999999',
-                     'state': 'active'}
+                     'accountStatus': 'active'}
 
     assert response.status_code == 200, \
         f'Expected status code to be 200; got {response.status_code}'

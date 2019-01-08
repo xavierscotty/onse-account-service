@@ -55,7 +55,7 @@ definitions:
       accountNumber:
         type: string
         description: Account Number
-      state:
+      accountStatus:
         type: string
         enum: [active, closed]
         description: The account status

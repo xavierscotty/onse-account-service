@@ -11,6 +11,6 @@ def create():
     @app.route('/accounts/<string:account_number>', methods=['GET'])
     def get_accounts(account_number):
         return jsonify({'accountNumber': account_number,
-                        'state': 'active'})
+                        'accountStatus': 'active'})
 
     return app
