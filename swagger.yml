@@ -26,3 +26,36 @@ paths:
               message:
                 type: string
                 description: Contains the string "OK"
+
+  /accounts/{accountNumber}:
+    get:
+      summary: Get the account details
+      description: Returns the details details
+      produces:
+        - application/json
+      parameters:
+        - name: accountNumber
+          in: path
+          required: true
+          description: Account number
+          type: string
+          x-example: '999999'
+      responses:
+        200:
+          description: Account details found
+          schema:
+            $ref: "#/definitions/Account"
+        404:
+          description: Account details not found
+
+definitions:
+  Account:
+    type: object
+    properties:
+      accountNumber:
+        type: string
+        description: Account Number
+      state:
+        type: string
+        enum: [active, closed]
+        description: The account status
