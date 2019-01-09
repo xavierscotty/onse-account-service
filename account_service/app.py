@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 
 def create():
@@ -9,8 +9,21 @@ def create():
         return jsonify(message='OK')
 
     @app.route('/accounts/<string:account_number>', methods=['GET'])
-    def get_accounts(account_number):
-        return jsonify({'accountNumber': account_number,
+    def get_account(account_number):
+        return jsonify({'customerId': '12345',
+                        'accountNumber': account_number,
                         'accountStatus': 'active'})
+
+    @app.route('/accounts', methods=['POST'])
+    def create_account():
+        body = request.get_json()
+        print(repr(body))
+        customer_id = body['customerId']
+
+        return jsonify({
+            'customerId': customer_id,
+            'accountNumber': 'todo',
+            'accountStatus': 'active'
+        }), 201
 
     return app

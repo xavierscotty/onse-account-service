@@ -47,6 +47,23 @@ paths:
             $ref: "#/definitions/Account"
         404:
           description: Account details not found
+    post:
+        summary: Create a new account
+        description: Creates the account and returns the details
+        produces:
+            - application/json
+        parameters:
+            - name: customerId
+              in: body
+              required: true
+              description: The customer to create the account for
+              type: string
+              x-example: '12345'
+        responses:
+            201:
+                description: Account was created
+                schema:
+                    $ref: "#/definitions/Account"
 
 definitions:
   Account:
