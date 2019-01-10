@@ -13,7 +13,6 @@ def get_account(account_number):
 @accounts.route('/accounts', methods=['POST'])
 def post_account():
     body = request.get_json()
-    print(repr(body))
     customer_id = body['customerId']
 
     return jsonify({
