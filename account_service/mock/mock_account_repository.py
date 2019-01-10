@@ -1,7 +1,7 @@
 from account_service.api.accounts import AccountNotFound
 
 
-class InMemoryAccountRepository:
+class MockAccountRepository:
     def __init__(self):
         self.accounts = {}
         self.last_account_number = 0

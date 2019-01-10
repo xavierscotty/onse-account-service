@@ -41,4 +41,4 @@ def test_fetch_by_account_number_returns_the_account(account_repository):
                 'accountNumber': account_number,
                 'accountStatus': 'active'}
 
-    assert account == expected, f'{repr(account)} != {repr(expected)}'
+    assert account == expected

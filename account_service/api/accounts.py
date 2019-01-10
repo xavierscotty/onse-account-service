@@ -17,7 +17,11 @@ def get_account(account_number):
 @accounts.route('/accounts', methods=['POST'])
 def post_account():
     body = request.get_json()
+    customer_client = current_app.customer_client
     customer_id = body['customerId']
+
+    if not customer_client.has_customer_with_id(customer_id):
+        return jsonify(message='Customer not found'), 400
 
     return jsonify({
         'customerId': customer_id,

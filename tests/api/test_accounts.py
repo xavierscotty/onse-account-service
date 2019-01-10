@@ -9,12 +9,9 @@ def test_get_accounts_by_number_when_account_exists(web_client,
                      'accountNumber': account_number,
                      'accountStatus': 'active'}
 
-    assert response.status_code == 200, \
-        f'Expected status code to be 200; got {response.status_code}'
-    assert response.is_json, \
-        f'Expected content type to be JSON; got "{response.data}'
-    assert response.get_json() == expected_json, \
-        f'Unexpected JSON; got {repr(response.get_json())}'
+    assert response.status_code == 200
+    assert response.is_json
+    assert response.get_json() == expected_json
 
 
 def test_get_accounts_by_number_when_account_does_not_exist(web_client):
@@ -23,26 +20,29 @@ def test_get_accounts_by_number_when_account_does_not_exist(web_client):
 
     expected_json = {'message': 'Not found'}
 
-    assert response.status_code == 404, \
-        f'Expected status code to be 404; got {response.status_code}'
-    assert response.is_json, \
-        f'Expected content type to be JSON; got "{response.data}'
-    assert response.get_json() == expected_json, \
-        f'Unexpected JSON; got {repr(response.get_json())}'
+    assert response.status_code == 404
+    assert response.is_json
+    assert response.get_json() == expected_json
 
 
-def test_post_accounts(web_client):
+def test_post_accounts(web_client, customer_client):
+    customer_client.add_customer_with_id('12345')
+
     request_body = {'customerId': '12345'}
     response = web_client.post('/accounts/accounts', json=request_body)
 
-    assert response.status_code == 201, \
-        f'Expected status code to be 201; got {response.status_code}'
-    assert response.is_json, \
-        f'Expected content type to be JSON; got "{response.data}'
+    assert response.status_code == 201
+    assert response.is_json
     account = response.get_json()
-    assert account['customerId'] == '12345', \
-        f'Expected customerId to be 12345, got account {account}'
-    assert account['accountStatus'] == 'active', \
-        f'Expected accountStatus to be "active", got account {account}'
-    assert 'accountNumber' in account, \
-        f'Expected account to have accountNumber, got account {account}'
+    assert account['customerId'] == '12345'
+    assert account['accountStatus'] == 'active'
+    assert 'accountNumber' in account
+
+
+def test_post_accounts_when_customer_does_not_exist(web_client):
+    request_body = {'customerId': '12345'}
+    response = web_client.post('/accounts/accounts', json=request_body)
+
+    assert response.status_code == 400
+    assert response.is_json
+    assert response.get_json() == {'message': 'Customer not found'}
