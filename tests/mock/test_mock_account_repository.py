@@ -1,22 +1,23 @@
 import pytest
 
 from account_service.api.accounts import AccountNotFound
+from account_service.domain.account import Account
 
 
-def test_store_returns_a_account_number_as_8_digits(account_repository):
-    account = {'customerId': '12345', 'accountStatus': 'active'}
-    account_number = account_repository.store(account)
+def test_store_sets_the_account_number(account_repository):
+    account = Account(customer_id='12345', account_status='active')
+    account_repository.store(account)
 
-    assert type(account_number) is str
-    assert len(account_number) == 8
+    assert account.account_number is not None
 
 
 def test_store_generates_a_new_account_number_each_time(account_repository):
-    account = {'customerId': '12345', 'accountStatus': 'active'}
-    account_number1 = account_repository.store(account)
-    account_number2 = account_repository.store(account)
+    account1 = Account(customer_id='12345', account_status='active')
+    account2 = Account(customer_id='12345', account_status='active')
+    account_repository.store(account1)
+    account_repository.store(account2)
 
-    assert account_number1 != account_number2
+    assert account1.account_number != account2.account_number
 
 
 def test_fetch_by_account_number_raises_if_not_found(account_repository):
@@ -24,21 +25,12 @@ def test_fetch_by_account_number_raises_if_not_found(account_repository):
         account_repository.fetch_by_account_number('12345678')
 
 
-def test_fetch_by_account_number_does_not_modify_the_input(account_repository):
-    account = {'customerId': '12345', 'accountStatus': 'active'}
-    account_repository.store(account)
-    assert 'accountNumber' not in account
-
-
 def test_fetch_by_account_number_returns_the_account(account_repository):
-    account_number = account_repository.store({'customerId': '12345',
-                                               'accountStatus': 'active'})
-    account_repository.store({'customerId': '99999', 'accountStatus': 'active'})
+    account1 = Account(customer_id='12345', account_status='active')
+    account2 = Account(customer_id='99999', account_status='active')
+    account_repository.store(account1)
+    account_repository.store(account2)
 
-    account = account_repository.fetch_by_account_number(account_number)
+    fetched_account = account_repository.fetch_by_account_number(account1.account_number)
 
-    expected = {'customerId': '12345',
-                'accountNumber': account_number,
-                'accountStatus': 'active'}
-
-    assert account == expected
+    assert fetched_account is account1

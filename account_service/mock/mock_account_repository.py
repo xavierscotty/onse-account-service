@@ -7,12 +7,8 @@ class MockAccountRepository:
         self.last_account_number = 0
 
     def store(self, account):
-        account_number = self._generate_account_number()
-        account_copy = account.copy()
-        account_copy['accountNumber'] = account_number
-        self.accounts[account_number] = account_copy
-
-        return account_number
+        account.account_number = self._generate_account_number()
+        self.accounts[account.account_number] = account
 
     def fetch_by_account_number(self, account_number):
         if account_number not in self.accounts:

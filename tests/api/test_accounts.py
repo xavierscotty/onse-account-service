@@ -1,8 +1,14 @@
+from account_service.domain.account import Account
+
+
 def test_get_accounts_by_number_when_account_exists(web_client,
                                                     account_repository):
-    account_number = account_repository.store({'customerId': '12345',
-                                               'accountStatus': 'active'})
+    account = Account(customer_id='12345', account_status='active')
+    account_repository.store(account)
 
+    account_number = account.formatted_account_number
+
+    print(f'/accounts/accounts/{account_number}')
     response = web_client.get(f'/accounts/accounts/{account_number}')
 
     expected_json = {'customerId': '12345',
@@ -33,10 +39,22 @@ def test_post_accounts(web_client, customer_client):
 
     assert response.status_code == 201
     assert response.is_json
+
     account = response.get_json()
+
     assert account['customerId'] == '12345'
     assert account['accountStatus'] == 'active'
     assert 'accountNumber' in account
+
+    account_number = account['accountNumber']
+
+    print(f'/accounts/accounts/{account_number}')
+    response = web_client.get(f'/accounts/accounts/{account_number}')
+    account = response.get_json()
+
+    assert account == {'accountNumber': account_number,
+                       'accountStatus': 'active',
+                       'customerId': '12345'}
 
 
 def test_post_accounts_when_customer_does_not_exist(web_client):
