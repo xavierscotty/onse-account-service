@@ -1,8 +1,12 @@
-def test_get_accounts_by_number_when_account_exists(web_client):
-    response = web_client.get('/accounts/accounts/999999')
+def test_get_accounts_by_number_when_account_exists(web_client,
+                                                    account_repository):
+    account_number = account_repository.store({'customerId': '12345',
+                                               'accountStatus': 'active'})
+
+    response = web_client.get(f'/accounts/accounts/{account_number}')
 
     expected_json = {'customerId': '12345',
-                     'accountNumber': '999999',
+                     'accountNumber': account_number,
                      'accountStatus': 'active'}
 
     assert response.status_code == 200, \
@@ -10,7 +14,21 @@ def test_get_accounts_by_number_when_account_exists(web_client):
     assert response.is_json, \
         f'Expected content type to be JSON; got "{response.data}'
     assert response.get_json() == expected_json, \
-        f'Unexpected JSON; got {repr(response.get_json())} '
+        f'Unexpected JSON; got {repr(response.get_json())}'
+
+
+def test_get_accounts_by_number_when_account_does_not_exist(web_client):
+    bad_account_number = '11111111'
+    response = web_client.get(f'/accounts/accounts/{bad_account_number}')
+
+    expected_json = {'message': 'Not found'}
+
+    assert response.status_code == 404, \
+        f'Expected status code to be 404; got {response.status_code}'
+    assert response.is_json, \
+        f'Expected content type to be JSON; got "{response.data}'
+    assert response.get_json() == expected_json, \
+        f'Unexpected JSON; got {repr(response.get_json())}'
 
 
 def test_post_accounts(web_client):

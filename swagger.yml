@@ -19,7 +19,7 @@ paths:
         - application/json
       responses:
         200:
-          description: Customer details found
+          description: Service OK
           schema:
             type: object
             properties:
@@ -47,6 +47,12 @@ paths:
             $ref: "#/definitions/Account"
         404:
           description: Account details not found
+          schema:
+              type: object
+              properties:
+                  message:
+                      type: string
+                      description: Contains the string "Not found"
     post:
         summary: Create a new account
         description: Creates the account and returns the details

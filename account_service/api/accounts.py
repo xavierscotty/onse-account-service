@@ -1,13 +1,17 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, current_app
 
 accounts = Blueprint('accounts', __name__, url_prefix='/accounts/')
 
 
 @accounts.route('/accounts/<string:account_number>', methods=['GET'])
 def get_account(account_number):
-    return jsonify({'customerId': '12345',
-                    'accountNumber': account_number,
-                    'accountStatus': 'active'})
+    try:
+        account_repository = current_app.account_repository
+
+        account = account_repository.fetch_by_account_number(account_number)
+        return jsonify(account)
+    except AccountNotFound:
+        return jsonify(message='Not found'), 404
 
 
 @accounts.route('/accounts', methods=['POST'])
@@ -20,3 +24,7 @@ def post_account():
         'accountNumber': 'todo',
         'accountStatus': 'active'
     }), 201
+
+
+class AccountNotFound(RuntimeError):
+    pass
