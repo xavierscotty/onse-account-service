@@ -12,6 +12,6 @@ if __name__ == "__main__":
             port=Config.DB_PORT,
             username=Config.DB_USERNAME,
             password=Config.DB_PASSWORD,
-            db='accounts'),
+            db=Config.DB_NAME),
         customer_client=RestCustomerClient(Config.CUSTOMER_SERVICE_URL)
     ).run(host='0.0.0.0', port=Config.PORT)
