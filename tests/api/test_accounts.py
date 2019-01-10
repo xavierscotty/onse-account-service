@@ -5,7 +5,6 @@ def test_get_accounts_by_number_when_account_exists(web_client,
                                                     account_repository):
     account = Account(customer_id='12345', account_status='active')
     account_repository.store(account)
-
     account_number = account.formatted_account_number
 
     response = web_client.get(f'/accounts/accounts/{account_number}')

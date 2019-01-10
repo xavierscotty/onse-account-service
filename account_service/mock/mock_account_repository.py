@@ -18,4 +18,4 @@ class MockAccountRepository:
 
     def _generate_account_number(self):
         self.last_account_number = self.last_account_number + 1
-        return format(self.last_account_number, '08')
+        return self.last_account_number

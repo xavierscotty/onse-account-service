@@ -13,4 +13,4 @@ class Account(Base):
 
     @property
     def formatted_account_number(self):
-        return self.account_number
+        return format(self.account_number, '08')

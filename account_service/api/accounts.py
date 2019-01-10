@@ -10,9 +10,9 @@ def get_account(account_number):
     try:
         account_repository = current_app.account_repository
 
-        account = account_repository.fetch_by_account_number(account_number)
+        account = account_repository.fetch_by_account_number(int(account_number))
 
-        return jsonify(accountNumber=account.account_number,
+        return jsonify(accountNumber=account.formatted_account_number,
                        accountStatus=account.account_status,
                        customerId=account.customer_id)
     except AccountNotFound:
@@ -37,7 +37,7 @@ def post_account():
 
     return jsonify({
         'customerId': customer_id,
-        'accountNumber': account.account_number,
+        'accountNumber': account.formatted_account_number,
         'accountStatus': 'active'
     }), 201
 
