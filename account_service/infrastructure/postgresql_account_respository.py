@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 
 from account_service.api.accounts import AccountNotFound
 from account_service.domain.account import Account
@@ -19,11 +20,11 @@ class PostgreSQLAccountRepository:
         self.session.commit()
 
     def fetch_by_account_number(self, account_number):
-        accounts = self.session \
-            .query(Account) \
-            .filter(Account.account_number == account_number)
-
-        if len(accounts) == 0:
+        try:
+            return self.session \
+                .query(Account) \
+                .filter(Account.account_number == account_number) \
+                .one()
+        except NoResultFound:
             raise AccountNotFound
 
-        return accounts[0]

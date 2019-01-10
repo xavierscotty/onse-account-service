@@ -8,7 +8,6 @@ def test_get_accounts_by_number_when_account_exists(web_client,
 
     account_number = account.formatted_account_number
 
-    print(f'/accounts/accounts/{account_number}')
     response = web_client.get(f'/accounts/accounts/{account_number}')
 
     expected_json = {'customerId': '12345',
