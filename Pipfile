@@ -11,6 +11,8 @@ requests-mock = "*"
 flask = "*"
 behave = "*"
 requests = "*"
+alembic = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"
