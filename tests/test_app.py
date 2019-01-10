@@ -9,7 +9,7 @@ def web_client():
 
 
 def test_get_health(web_client):
-    response = web_client.get('/health')
+    response = web_client.get('/accounts/health')
 
     assert response.status_code == 200, \
         f'Expected status code to be 200; got {response.status_code}'
@@ -20,7 +20,7 @@ def test_get_health(web_client):
 
 
 def test_get_accounts_by_number_when_account_exists(web_client):
-    response = web_client.get('/accounts/999999')
+    response = web_client.get('/accounts/accounts/999999')
 
     expected_json = {'customerId': '12345',
                      'accountNumber': '999999',
@@ -36,7 +36,7 @@ def test_get_accounts_by_number_when_account_exists(web_client):
 
 def test_post_accounts(web_client):
     request_body = {'customerId': '12345'}
-    response = web_client.post('/accounts', json=request_body)
+    response = web_client.post('/accounts/accounts', json=request_body)
 
     assert response.status_code == 201, \
         f'Expected status code to be 201; got {response.status_code}'
