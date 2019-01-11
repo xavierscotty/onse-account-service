@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 
-from account_service.api.accounts import AccountNotFound
+from account_service.domain.errors import AccountNotFound
 from account_service.domain.account import Account
 
 

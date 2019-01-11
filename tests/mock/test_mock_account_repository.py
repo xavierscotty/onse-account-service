@@ -1,6 +1,6 @@
 import pytest
 
-from account_service.api.accounts import AccountNotFound
+from account_service.domain.errors import AccountNotFound
 from account_service.domain.account import Account
 
 

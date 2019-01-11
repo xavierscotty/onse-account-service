@@ -1,24 +1,34 @@
+from unittest import mock
+from unittest.mock import patch
+
 from account_service.domain.account import Account
+from account_service.domain.errors import AccountNotFound, CustomerNotFound
 
 
-def test_get_accounts_by_number_when_account_exists(web_client,
+@patch('account_service.domain.commands.get_account')
+def test_get_accounts_by_number_when_account_exists(get_account,
+                                                    web_client,
                                                     account_repository):
-    account = Account(customer_id='12345', account_status='active')
-    account_repository.store(account)
-    account_number = account.formatted_account_number
+    get_account.return_value = Account(account_number=123,
+                                       account_status='active',
+                                       customer_id='12345')
 
-    response = web_client.get(f'/accounts/accounts/{account_number}')
+    response = web_client.get(f'/accounts/accounts/00000123')
 
-    expected_json = {'customerId': '12345',
-                     'accountNumber': account_number,
-                     'accountStatus': 'active'}
+    get_account.assert_called_with(account_number=123,
+                                   account_repository=account_repository)
 
     assert response.status_code == 200
     assert response.is_json
-    assert response.get_json() == expected_json
+    assert response.get_json() == {'customerId': '12345',
+                                   'accountNumber': '00000123',
+                                   'accountStatus': 'active'}
 
 
-def test_get_accounts_by_number_when_account_does_not_exist(web_client):
+@patch('account_service.domain.commands.get_account')
+def test_get_accounts_by_number_when_account_does_not_exist(get_client,
+                                                            web_client):
+    get_client.side_effect = AccountNotFound()
     bad_account_number = '11111111'
     response = web_client.get(f'/accounts/accounts/{bad_account_number}')
 
@@ -29,11 +39,21 @@ def test_get_accounts_by_number_when_account_does_not_exist(web_client):
     assert response.get_json() == expected_json
 
 
-def test_post_accounts(web_client, customer_client):
-    customer_client.add_customer_with_id('12345')
-
+@patch('account_service.domain.commands.create_account')
+def test_post_accounts(create_account, web_client, account_repository,
+                       customer_client):
     request_body = {'customerId': '12345'}
+
     response = web_client.post('/accounts/accounts', json=request_body)
+
+    create_account.assert_called_with(account=mock.ANY,
+                                      account_repository=account_repository,
+                                      customer_client=customer_client)
+
+    saved_account = create_account.mock_calls[0][2]['account']
+    assert saved_account.account_number is None
+    assert saved_account.account_status == 'active'
+    assert saved_account.customer_id == '12345'
 
     assert response.status_code == 201
     assert response.is_json
@@ -42,22 +62,17 @@ def test_post_accounts(web_client, customer_client):
 
     assert account['customerId'] == '12345'
     assert account['accountStatus'] == 'active'
-    assert 'accountNumber' in account
-
-    account_number = account['accountNumber']
-
-    print(f'/accounts/accounts/{account_number}')
-    response = web_client.get(f'/accounts/accounts/{account_number}')
-    account = response.get_json()
-
-    assert account == {'accountNumber': account_number,
-                       'accountStatus': 'active',
-                       'customerId': '12345'}
+    assert account['accountNumber'] is None  # None because call is mocked
 
 
-def test_post_accounts_when_customer_does_not_exist(web_client):
-    request_body = {'customerId': '12345'}
-    response = web_client.post('/accounts/accounts', json=request_body)
+@patch('account_service.domain.commands.create_account')
+def test_post_accounts_when_customer_does_not_exist(create_account, web_client,
+                                                    account_repository,
+                                                    customer_client):
+    create_account.side_effect = CustomerNotFound()
+
+    response = web_client.post('/accounts/accounts',
+                               json={'customerId': '12345'})
 
     assert response.status_code == 400
     assert response.is_json

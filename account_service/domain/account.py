@@ -13,4 +13,7 @@ class Account(Base):
 
     @property
     def formatted_account_number(self):
+        if self.account_number is None:
+            return None
+
         return format(self.account_number, '08')

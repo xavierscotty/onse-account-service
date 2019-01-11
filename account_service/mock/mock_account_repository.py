@@ -1,4 +1,4 @@
-from account_service.api.accounts import AccountNotFound
+from account_service.domain.errors import AccountNotFound
 
 
 class MockAccountRepository:
