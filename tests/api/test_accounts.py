@@ -26,9 +26,10 @@ def test_get_accounts_by_number_when_account_exists(get_account,
 
 
 @patch('account_service.domain.commands.get_account')
-def test_get_accounts_by_number_when_account_does_not_exist(get_client,
+def test_get_accounts_by_number_when_account_does_not_exist(get_account,
                                                             web_client):
-    get_client.side_effect = AccountNotFound()
+    get_account.side_effect = AccountNotFound()
+
     bad_account_number = '11111111'
     response = web_client.get(f'/accounts/accounts/{bad_account_number}')
 
