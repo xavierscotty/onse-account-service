@@ -5,7 +5,7 @@ Base = declarative_base()
 
 
 class Account(Base):
-    __tablename__ = 'transactions'
+    __tablename__ = 'accounts'
 
     account_number = Column(Integer, primary_key=True, autoincrement=True)
     account_status = Column(String(100))
