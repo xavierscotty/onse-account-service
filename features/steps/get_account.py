@@ -1,4 +1,4 @@
-from behave import *
+from behave import given, when, then
 
 from account_service.domain.account import Account
 

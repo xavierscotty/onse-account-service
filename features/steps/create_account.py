@@ -1,4 +1,4 @@
-from behave import *
+from behave import given, when, then
 
 from features.steps.get_account import get_account_by_context, \
     assert_account_details

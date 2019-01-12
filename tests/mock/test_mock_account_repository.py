@@ -26,11 +26,11 @@ def test_fetch_by_account_number_raises_if_not_found(account_repository):
 
 
 def test_fetch_by_account_number_returns_the_account(account_repository):
-    account1 = Account(customer_id='12345', account_status='active')
-    account2 = Account(customer_id='99999', account_status='active')
-    account_repository.store(account1)
-    account_repository.store(account2)
+    saved = Account(customer_id='12345', account_status='active')
+    other = Account(customer_id='99999', account_status='active')
+    account_repository.store(saved)
+    account_repository.store(other)
 
-    fetched_account = account_repository.fetch_by_account_number(account1.account_number)
+    fetched = account_repository.fetch_by_account_number(saved.account_number)
 
-    assert fetched_account is account1
+    assert fetched is saved

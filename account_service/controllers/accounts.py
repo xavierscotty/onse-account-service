@@ -29,9 +29,10 @@ def post_account():
     account = Account(account_status='active',
                       customer_id=customer_id)
     try:
-        commands.create_account(account=account,
-                                account_repository=current_app.account_repository,
-                                customer_client=current_app.customer_client)
+        commands.create_account(
+            account=account,
+            account_repository=current_app.account_repository,
+            customer_client=current_app.customer_client)
 
         return jsonify({
             'customerId': customer_id,
