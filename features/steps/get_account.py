@@ -2,7 +2,7 @@ from behave import *
 
 from account_service.domain.account import Account
 
-GET_ACCOUNT_URL = f'/accounts/accounts/%s'
+GET_ACCOUNT_URL = f'/accounts/%s'
 
 
 @given('there an "{status}" account with customer id "{customer_id}"')

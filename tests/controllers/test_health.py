@@ -1,5 +1,5 @@
 def test_get_health(web_client):
-    response = web_client.get('/accounts/health')
+    response = web_client.get('/health')
 
     assert response.status_code == 200
     assert response.is_json

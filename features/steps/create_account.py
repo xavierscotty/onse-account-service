@@ -3,7 +3,7 @@ from behave import *
 from features.steps.get_account import get_account_by_context, \
     assert_account_details
 
-CREATE_ACCOUNT_URL = f'/accounts/accounts'
+CREATE_ACCOUNT_URL = f'/accounts/'
 
 
 @given('I am a registered customer with ID "{customer_id}"')

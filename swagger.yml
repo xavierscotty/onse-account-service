@@ -53,6 +53,8 @@ paths:
                   message:
                       type: string
                       description: Contains the string "Not found"
+
+  /accounts/:
     post:
         summary: Create a new account
         description: Creates the account and returns the details

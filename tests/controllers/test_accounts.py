@@ -13,7 +13,7 @@ def test_get_accounts_by_number_when_account_exists(get_account,
                                        account_status='active',
                                        customer_id='12345')
 
-    response = web_client.get(f'/accounts/accounts/00000123')
+    response = web_client.get(f'/accounts/00000123')
 
     get_account.assert_called_with(account_number=123,
                                    account_repository=account_repository)
@@ -31,7 +31,7 @@ def test_get_accounts_by_number_when_account_does_not_exist(get_account,
     get_account.side_effect = AccountNotFound()
 
     bad_account_number = '11111111'
-    response = web_client.get(f'/accounts/accounts/{bad_account_number}')
+    response = web_client.get(f'/accounts/{bad_account_number}')
 
     expected_json = {'message': 'Not found'}
 
@@ -45,7 +45,7 @@ def test_post_accounts(create_account, web_client, account_repository,
                        customer_client):
     request_body = {'customerId': '12345'}
 
-    response = web_client.post('/accounts/accounts', json=request_body)
+    response = web_client.post('/accounts/', json=request_body)
 
     create_account.assert_called_with(account=mock.ANY,
                                       account_repository=account_repository,
@@ -72,7 +72,7 @@ def test_post_accounts_when_customer_does_not_exist(create_account, web_client,
                                                     customer_client):
     create_account.side_effect = CustomerNotFound()
 
-    response = web_client.post('/accounts/accounts',
+    response = web_client.post('/accounts/',
                                json={'customerId': '12345'})
 
     assert response.status_code == 400

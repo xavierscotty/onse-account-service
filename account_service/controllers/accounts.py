@@ -7,7 +7,7 @@ from account_service.domain.errors import CustomerNotFound, AccountNotFound
 accounts = Blueprint('accounts', __name__, url_prefix='/accounts/')
 
 
-@accounts.route('/accounts/<string:account_number>', methods=['GET'])
+@accounts.route('/<string:account_number>', methods=['GET'])
 def get_account(account_number):
     try:
         account = commands.get_account(
@@ -21,7 +21,7 @@ def get_account(account_number):
         return jsonify(message='Not found'), 404
 
 
-@accounts.route('/accounts', methods=['POST'])
+@accounts.route('/', methods=['POST'])
 def post_account():
     body = request.get_json()
     customer_id = body['customerId']

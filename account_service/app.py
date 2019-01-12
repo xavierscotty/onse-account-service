@@ -1,7 +1,7 @@
 from flask import Flask
 
-from account_service.api.accounts import accounts
-from account_service.api.health import health
+from account_service.controllers.accounts import accounts
+from account_service.controllers.health import health
 
 
 def create(account_repository, customer_client):
