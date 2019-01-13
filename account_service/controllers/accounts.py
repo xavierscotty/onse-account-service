@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import request, jsonify, Blueprint, current_app
 from schema import Schema, SchemaError, And
 
@@ -44,22 +46,22 @@ def post_account():
         'customerId': customer_id,
         'accountNumber': account.formatted_account_number,
         'accountStatus': 'active'
-    }), 201
+    }), HTTPStatus.CREATED
 
 
 @accounts.errorhandler(AccountNotFound)
 def account_not_found(e):
-    return jsonify(message='Not found'), 404
+    return jsonify(message='Not found'), HTTPStatus.NOT_FOUND
 
 
 @accounts.errorhandler(CustomerNotFound)
 def customer_not_found(e):
-    return jsonify(message='Customer not found'), 400
+    return jsonify(message='Customer not found'), HTTPStatus.BAD_REQUEST
 
 
 @accounts.errorhandler(SchemaError)
 def schema_error(e):
-    return jsonify(message=str(e)), 400
+    return jsonify(message=str(e)), HTTPStatus.BAD_REQUEST
 
 
 class ContentTypeError(RuntimeError):
@@ -68,4 +70,5 @@ class ContentTypeError(RuntimeError):
 
 @accounts.errorhandler(ContentTypeError)
 def content_type_error(e):
-    return jsonify(message='Request must be application/json'), 400
+    return jsonify(message='Request must be application/json'), \
+           HTTPStatus.UNSUPPORTED_MEDIA_TYPE
