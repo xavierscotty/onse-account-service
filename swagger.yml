@@ -69,7 +69,11 @@ paths:
           schema:
             $ref: "#/definitions/Account"
         400:
-          description: Bad payload
+          description: Bad payload or unknown customer
+          schema:
+            $ref: "#/definitions/Message"
+        415:
+          description: Bad Content-Type
           schema:
             $ref: "#/definitions/Message"
 
