@@ -1,6 +1,8 @@
 from unittest import mock
 from unittest.mock import patch
 
+import pytest
+
 from account_service.domain.account import Account
 from account_service.domain.errors import AccountNotFound, CustomerNotFound
 
@@ -78,3 +80,19 @@ def test_post_accounts_when_customer_does_not_exist(create_account, web_client,
     assert response.status_code == 400
     assert response.is_json
     assert response.get_json() == {'message': 'Customer not found'}
+
+
+@pytest.mark.parametrize(
+    'bad_payload',
+    [{},
+     {'customerId': '12345678', 'unknown': 'value'},
+     {'customerId': ''}])
+def test_post_accounts_with_bad_payload(web_client, bad_payload):
+    response = web_client.post('/accounts/', json=bad_payload)
+    assert response.status_code == 400
+
+
+def test_post_accounts_with_bad_context_type(web_client):
+    response = web_client.post('/accounts/', data='not json')
+    assert response.status_code == 400
+    assert response.get_json()['message'] == 'Request must be application/json'

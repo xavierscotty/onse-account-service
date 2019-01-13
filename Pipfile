@@ -16,6 +16,7 @@ requests = "*"
 alembic = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
+schema = "*"
 
 [requires]
 python_version = "3.7"

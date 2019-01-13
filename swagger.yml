@@ -48,30 +48,30 @@ paths:
         404:
           description: Account details not found
           schema:
-              type: object
-              properties:
-                  message:
-                      type: string
-                      description: Contains the string "Not found"
+
 
   /accounts/:
     post:
-        summary: Create a new account
-        description: Creates the account and returns the details
-        produces:
-            - application/json
-        parameters:
-            - name: customerId
-              in: body
-              required: true
-              description: The customer to create the account for
-              type: string
-              x-example: '12345'
-        responses:
-            201:
-                description: Account was created
-                schema:
-                    $ref: "#/definitions/Account"
+      summary: Create a new account
+      description: Creates the account and returns the details
+      produces:
+        - application/json
+      parameters:
+        - name: customerId
+          type: integer
+          in: body
+          required: true
+          description: The customer to create the account for
+          x-example: '12345'
+      responses:
+        201:
+          description: Account was created
+          schema:
+            $ref: "#/definitions/Account"
+        400:
+          description: Bad payload
+          schema:
+            $ref: "#/definitions/Message"
 
 definitions:
   Account:
@@ -84,3 +84,9 @@ definitions:
         type: string
         enum: [active, closed]
         description: The account status
+  Message:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Contains the message
