@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service
+  labels:
+    app: account-service
+    tier: api
+spec:
+  selector:
+    matchLabels:
+      app: account-service
+      tier: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account-service
+        tier: api
+    spec:
+      containers:
+      - name: account-service
+        image: aklearning/eng-lab-account-service
+        imagePullPolicy: Always
+        env:
+        - name: CUSTOMER_SERVICE_URL
+          value: http://customer-service:5000
+        - name: DB_HOST
+          value: account-service-db
+        - name: DB_PASSWORD
+          value: guest
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USERNAME
+          value: guest
+        - name: PORT
+          value: "5000"
+        ports:
+        - containerPort: 5000
+      restartPolicy: Always
