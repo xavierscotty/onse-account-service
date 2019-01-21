@@ -50,9 +50,8 @@ podTemplate(name: 'account-service-build', label: label, yaml: build_pod_templat
 
     stage('Test') {
         container(name: 'python-test', shell: '/bin/sh') {
-            sh 'pip install pipenv'
             sh 'pipenv install --dev'
-            sh 'pipenv run python -m pytest'
+            sh 'bin/run_tests.sh'
         }
     }
 
