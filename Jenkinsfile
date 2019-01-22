@@ -1,4 +1,3 @@
-def label = "build-${UUID.randomUUID().toString()}"
 def image_name = "aklearning/onse-account-service"
 def namespace = 'aklearning'
 def git_repository = 'https://github.com/ONSdigital/onse-account-service'
@@ -8,6 +7,7 @@ def kubectl_image = 'aklearning/onse-eks-kubectl-deployer:0.0.1'
 
 def git_commit = ''
 
+def label = "build-${UUID.randomUUID().toString()}"
 def build_pod_template = """
 kind: Pod
 metadata:
