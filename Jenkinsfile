@@ -1,7 +1,7 @@
 def github_id = 'ONSdigital'
 
-def image_name = "onsetraining/${pair_id}-onse-account-service"
 def namespace = github_id.toLowerCase()
+def image_name = "onsetraining/${namespace}-onse-account-service"
 def git_repository = "https://github.com/${ONSdigital}/onse-account-service"
 def kaniko_image = 'gcr.io/kaniko-project/executor:debug-b0e7c0e8cd07ef3ad2b7181e0779af9fcb312f0b'
 def kubectl_image = 'aklearning/onse-eks-kubectl-deployer:0.0.1'
