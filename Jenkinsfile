@@ -1,7 +1,8 @@
-def image_name = "aklearning/onse-account-service"
-def namespace = 'aklearning'
-def git_repository = 'https://github.com/ONSdigital/onse-account-service'
+def github_id = 'ONSdigital'
 
+def image_name = "onsetraining/${pair_id}-onse-account-service"
+def namespace = github_id.toLowerCase()
+def git_repository = "https://github.com/${ONSdigital}/onse-account-service"
 def kaniko_image = 'gcr.io/kaniko-project/executor:debug-b0e7c0e8cd07ef3ad2b7181e0779af9fcb312f0b'
 def kubectl_image = 'aklearning/onse-eks-kubectl-deployer:0.0.1'
 
@@ -44,7 +45,7 @@ spec:
               path: config.json
 """
 
-podTemplate(name: 'account-service-build', label: label, yaml: build_pod_template) {
+podTemplate(name: "${namespace}-account-service-build", label: label, yaml: build_pod_template) {
   node(label) {
     git git_repository
 
